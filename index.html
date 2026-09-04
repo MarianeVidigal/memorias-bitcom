@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Memórias Bitcom</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="network-background"></div>
+
+    <!-- =========================
+         ABERTURA
+    ========================== -->
+    <main id="home" class="screen active">
+
+        <div class="content">
+
+            <p class="small-text">
+                UMA HISTÓRIA DE CONEXÕES
+            </p>
+
+            <h1>
+                Nem todas as conexões<br>
+                precisam de cabos<br>
+                para continuar existindo.
+            </h1>
+
+            <div class="connection-line"></div>
+
+            <button id="startButton" class="main-button">
+                ▶ REVIVER MEMÓRIAS
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         INTRO
+    ========================== -->
+    <section id="intro" class="screen">
+
+        <div class="content">
+
+            <p class="small-text">
+                ANTES DE CONTINUAR...
+            </p>
+
+            <h2>
+                Algumas histórias<br>
+                merecem ser lembradas.
+            </h2>
+
+            <div class="connection-line"></div>
+
+            <button id="introButton" class="main-button">
+                CONTINUAR
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         VÍDEO
+    ========================== -->
+    <section id="videoScreen" class="screen">
+
+        <div class="video-container">
+
+            <p class="small-text">
+                UMA ÚLTIMA RECORDAÇÃO
+            </p>
+
+            <div class="video-wrapper">
+
+                <video
+                    id="farewellVideo"
+                    playsinline
+                    controls
+                >
+                    <source
+                        src="assets/memoria-01.mp4"
+                        type="video/mp4"
+                    >
+
+                    Seu navegador não suporta reprodução de vídeo.
+                </video>
+
+            </div>
+
+            <div class="progress-container">
+                <div
+                    id="videoProgress"
+                    class="progress-bar"
+                ></div>
+            </div>
+
+            <p
+                id="videoStatus"
+                class="video-status"
+            >
+                ASSISTA ATÉ O FINAL
+            </p>
+
+            <button
+                id="afterVideoButton"
+                class="main-button hidden"
+            >
+                MAIS UMA COISA...
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         MENSAGEM DE DESPEDIDA
+    ========================== -->
+    <section id="farewell" class="screen">
+
+        <div class="farewell-content">
+
+            <p class="small-text">
+                UMA ÚLTIMA MENSAGEM
+            </p>
+
+            <div class="farewell-text">
+
+                <p class="highlight">
+                    Algumas conexões<br>
+                    não terminam aqui.
+                </p>
+
+                <p>
+                    Foram anos de histórias, desafios,
+                    aprendizados, chamados, correria,
+                    problemas resolvidos e, principalmente,
+                    pessoas.
+                </p>
+
+                <p>
+                    Levo comigo muito mais do que
+                    experiências profissionais.
+                </p>
+
+                <p>
+                    Levo momentos, histórias e pessoas
+                    que fizeram essa caminhada valer a pena.
+                </p>
+
+                <p>
+                    Obrigada por fazerem parte da minha história.
+                </p>
+
+                <p class="signature">
+                    — Mariane
+                </p>
+
+            </div>
+
+            <button
+                id="goToWallButton"
+                class="main-button"
+            >
+                DEIXAR UMA MENSAGEM
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         MURAL
+    ========================== -->
+    <section id="wall" class="screen">
+
+        <div class="wall-container">
+
+            <div class="wall-header">
+
+                <p class="small-text">
+                    CONEXÕES CONTINUAM
+                </p>
+
+                <h2>
+                    Agora é a vez de vocês.
+                </h2>
+
+                <p>
+                    Se essa história também teve
+                    um pedacinho de você,
+                    deixe uma mensagem.
+                </p>
+
+            </div>
+
+
+            <!-- FORMULÁRIO -->
+            <form
+                id="messageForm"
+                class="message-form"
+            >
+
+                <input
+                    type="text"
+                    id="nameInput"
+                    name="name"
+                    placeholder="Seu nome"
+                    maxlength="60"
+                    required
+                >
+
+                <textarea
+                    id="messageInput"
+                    name="message"
+                    placeholder="Escreva sua mensagem..."
+                    maxlength="500"
+                    required
+                ></textarea>
+
+                <div class="form-footer">
+
+                    <span id="characterCount">
+                        0 / 500
+                    </span>
+
+                    <button
+                        type="submit"
+                        id="publishButton"
+                        class="main-button"
+                    >
+                        DEIXAR MINHA MARCA
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <!-- MENSAGEM DE CONFIRMAÇÃO -->
+            <p
+                id="formStatus"
+                class="video-status hidden"
+            ></p>
+
+
+            <!-- MENSAGENS -->
+            <div
+                id="messagesContainer"
+                class="messages-container"
+            >
+
+                <!--
+                    As mensagens aprovadas podem ser colocadas
+                    aqui manualmente posteriormente.
+                -->
+
+            </div>
+
+
+            <div class="wall-footer">
+
+                <p>
+                    Algumas conexões continuam existindo,
+                    mesmo quando os caminhos mudam.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

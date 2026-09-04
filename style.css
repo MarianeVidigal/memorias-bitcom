@@ -1,0 +1,655 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background: #05070d;
+    color: #ffffff;
+    font-family: "Segoe UI", Arial, sans-serif;
+    overflow: hidden;
+}
+
+
+/* ==============================
+   TELAS
+============================== */
+
+.screen {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(20px);
+
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s ease,
+        visibility 0.7s;
+
+    overflow-y: auto;
+}
+
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+
+/* ==============================
+   FUNDO
+============================== */
+
+.network-background {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 140, 255, 0.04) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0, 140, 255, 0.04) 1px,
+            transparent 1px
+        );
+
+    background-size: 50px 50px;
+
+    mask-image:
+        radial-gradient(
+            circle at center,
+            black 20%,
+            transparent 80%
+        );
+}
+
+
+/* ==============================
+   CONTEÚDO
+============================== */
+
+.content {
+    position: relative;
+
+    width: 100%;
+    max-width: 850px;
+
+    text-align: center;
+
+    z-index: 2;
+}
+
+.small-text {
+    margin-bottom: 20px;
+
+    color: #6ebcff;
+
+    font-size: 0.75rem;
+    font-weight: 600;
+
+    letter-spacing: 4px;
+}
+
+h1 {
+    margin-bottom: 45px;
+
+    font-size: clamp(2.2rem, 5vw, 4.5rem);
+
+    line-height: 1.1;
+
+    font-weight: 300;
+
+    text-shadow:
+        0 0 30px rgba(0, 150, 255, 0.25);
+}
+
+h2 {
+    margin-bottom: 25px;
+
+    font-size: clamp(2rem, 4vw, 3.5rem);
+
+    line-height: 1.15;
+
+    font-weight: 300;
+}
+
+
+/* ==============================
+   LINHA
+============================== */
+
+.connection-line {
+    width: 80px;
+    height: 2px;
+
+    margin: 0 auto 30px;
+
+    background: #4db8ff;
+
+    box-shadow:
+        0 0 15px rgba(77, 184, 255, 0.8);
+}
+
+
+/* ==============================
+   BOTÕES
+============================== */
+
+.main-button {
+    padding: 15px 28px;
+
+    border: 1px solid rgba(90, 190, 255, 0.6);
+    border-radius: 4px;
+
+    background: rgba(20, 100, 160, 0.12);
+
+    color: #ffffff;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.main-button:hover {
+    background: rgba(40, 150, 220, 0.25);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0 25px rgba(40, 160, 255, 0.25);
+}
+
+.main-button:active {
+    transform: translateY(0);
+}
+
+.hidden {
+    display: none;
+}
+
+
+/* ==============================
+   INTRO
+============================== */
+
+.intro-text {
+    margin-bottom: 40px;
+
+    color: #aab5c5;
+
+    font-size: 1.1rem;
+
+    line-height: 1.8;
+}
+
+
+/* ==============================
+   VÍDEO
+============================== */
+
+.video-container {
+    width: 100%;
+    max-width: 700px;
+
+    text-align: center;
+}
+
+.video-container h2 {
+    margin-bottom: 25px;
+}
+
+.video-wrapper {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+
+    max-height: 65vh;
+
+    margin-bottom: 15px;
+}
+
+.video-wrapper video {
+    display: block;
+
+    width: auto;
+    max-width: 100%;
+
+    height: auto;
+    max-height: 65vh;
+
+    border-radius: 6px;
+
+    background: #000;
+
+    box-shadow:
+        0 0 40px rgba(0, 120, 255, 0.15);
+}
+
+
+/* ==============================
+   PROGRESSO
+============================== */
+
+.progress-container {
+    width: 100%;
+    height: 3px;
+
+    margin-top: 15px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+
+    background: #4db8ff;
+
+    box-shadow:
+        0 0 10px rgba(77, 184, 255, 0.8);
+
+    transition: width 0.15s linear;
+}
+
+.video-status {
+    margin: 15px 0 25px;
+
+    color: #758397;
+
+    font-size: 0.7rem;
+
+    letter-spacing: 3px;
+}
+
+
+/* ==============================
+   DESPEDIDA
+============================== */
+
+.farewell-content {
+    max-width: 750px;
+}
+
+.farewell-text {
+    max-width: 650px;
+
+    margin: 0 auto 25px;
+
+    color: #b8c2d0;
+
+    font-size: 1.05rem;
+
+    line-height: 1.9;
+}
+
+.farewell-text p {
+    margin-bottom: 18px;
+}
+
+.farewell-text .highlight {
+    margin-top: 30px;
+
+    color: #ffffff;
+
+    font-size: 1.25rem;
+}
+
+.signature {
+    margin-bottom: 35px;
+
+    color: #6ebcff;
+
+    font-size: 1rem;
+
+    letter-spacing: 2px;
+}
+
+
+/* ==============================
+   MURAL
+============================== */
+
+#wall {
+    align-items: flex-start;
+
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.wall-container {
+    width: 100%;
+    max-width: 900px;
+
+    margin: auto;
+}
+
+.wall-header {
+    text-align: center;
+
+    margin-bottom: 35px;
+}
+
+.wall-header h2 {
+    margin-bottom: 15px;
+}
+
+.wall-header > p:last-child {
+    color: #8995a7;
+
+    font-size: 1rem;
+
+    line-height: 1.6;
+}
+
+
+/* ==============================
+   FORMULÁRIO
+============================== */
+
+.message-form {
+    padding: 25px;
+
+    border: 1px solid rgba(100, 160, 210, 0.15);
+    border-radius: 8px;
+
+    background: rgba(10, 20, 35, 0.55);
+
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.2);
+
+    backdrop-filter: blur(10px);
+
+    margin-bottom: 40px;
+}
+
+.message-form input,
+.message-form textarea {
+    width: 100%;
+
+    border: 1px solid rgba(130, 170, 210, 0.15);
+    border-radius: 4px;
+
+    background: rgba(0, 0, 0, 0.25);
+
+    color: #ffffff;
+
+    outline: none;
+
+    font-family: inherit;
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.message-form input {
+    height: 50px;
+
+    padding: 0 15px;
+
+    margin-bottom: 15px;
+}
+
+.message-form textarea {
+    min-height: 130px;
+
+    padding: 15px;
+
+    resize: vertical;
+}
+
+.message-form input::placeholder,
+.message-form textarea::placeholder {
+    color: #667386;
+}
+
+.message-form input:focus,
+.message-form textarea:focus {
+    border-color: rgba(77, 184, 255, 0.5);
+
+    box-shadow:
+        0 0 15px rgba(77, 184, 255, 0.08);
+}
+
+.form-footer {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+
+    margin-top: 15px;
+}
+
+#characterCount {
+    color: #657184;
+
+    font-size: 0.75rem;
+}
+
+
+/* ==============================
+   CARTÕES DAS MENSAGENS
+============================== */
+
+.messages-container {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(260px, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 60px;
+}
+
+.message-card {
+    position: relative;
+
+    padding: 22px;
+
+    border: 1px solid rgba(80, 160, 220, 0.12);
+    border-radius: 6px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20, 35, 55, 0.7),
+            rgba(8, 15, 25, 0.8)
+        );
+
+    animation: messageAppear 0.5s ease both;
+}
+
+.message-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 20px;
+
+    width: 35px;
+    height: 2px;
+
+    background: #4db8ff;
+
+    box-shadow:
+        0 0 10px rgba(77, 184, 255, 0.5);
+}
+
+.message-name {
+    margin-bottom: 12px;
+
+    color: #72c1ff;
+
+    font-size: 0.9rem;
+
+    font-weight: 600;
+
+    letter-spacing: 1px;
+}
+
+.message-text {
+    color: #c0c9d5;
+
+    font-size: 0.95rem;
+
+    line-height: 1.7;
+
+    white-space: pre-wrap;
+}
+
+.message-date {
+    margin-top: 18px;
+
+    color: #536174;
+
+    font-size: 0.65rem;
+
+    letter-spacing: 1px;
+}
+
+@keyframes messageAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ==============================
+   FINAL DO MURAL
+============================== */
+
+.wall-footer {
+    text-align: center;
+
+    padding-bottom: 30px;
+}
+
+.wall-footer .connection-line {
+    margin-bottom: 25px;
+}
+
+.wall-footer p {
+    max-width: 600px;
+
+    margin: 0 auto 15px;
+
+    color: #718096;
+
+    font-size: 0.9rem;
+
+    line-height: 1.6;
+}
+
+.wall-footer span {
+    font-size: 1.2rem;
+
+    opacity: 0.7;
+}
+
+
+/* ==============================
+   CELULAR
+============================== */
+
+@media (max-width: 600px) {
+
+    .screen {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+
+        margin-bottom: 35px;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .small-text {
+        font-size: 0.65rem;
+
+        letter-spacing: 3px;
+    }
+
+    .intro-text {
+        font-size: 0.95rem;
+    }
+
+    .video-wrapper video {
+        max-height: 58vh;
+    }
+
+    .farewell-text {
+        font-size: 0.95rem;
+
+        line-height: 1.75;
+    }
+
+    .message-form {
+        padding: 18px;
+    }
+
+    .form-footer {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    #characterCount {
+        text-align: right;
+    }
+
+    .form-footer .main-button {
+        width: 100%;
+    }
+
+    .messages-container {
+        grid-template-columns: 1fr;
+    }
+
+}

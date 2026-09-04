@@ -12,7 +12,7 @@ const GOOGLE_SHEETS_URL =
     "https://script.google.com/macros/s/AKfycbwQ53M1t-NYC7rWlXWMFTBeOPNoWR35MmQ9s5xO3QZnli71QcL4ECloOb5ZKJTHuhrS/exec";
 
 const FORMSUBMIT_URL =
-    "https://formsubmit.co/ajax/marianevigidal@gmail.com";
+    "https://formsubmit.co/ajax/marianevidigal@gmail.com";
 
 
 // ==========================================

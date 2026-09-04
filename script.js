@@ -1,6 +1,18 @@
 // ==========================================
 // MEMÓRIAS BITCOM
+// Controle das telas + vídeo + mural
 // ==========================================
+
+
+// ==========================================
+// CONFIGURAÇÃO
+// ==========================================
+
+const GOOGLE_SHEETS_URL =
+    "https://script.google.com/macros/s/AKfycbwQ53M1t-NYC7rWlXWMFTBeOPNoWR35MmQ9s5xO3QZnli71QcL4ECloOb5ZKJTHuhrS/exec";
+
+const FORMSUBMIT_URL =
+    "https://formsubmit.co/ajax/marianevigidal@gmail.com";
 
 
 // ==========================================
@@ -45,10 +57,11 @@ const messageInput = document.getElementById("messageInput");
 const characterCount = document.getElementById("characterCount");
 const publishButton = document.getElementById("publishButton");
 const formStatus = document.getElementById("formStatus");
+const messagesContainer = document.getElementById("messagesContainer");
 
 
 // ==========================================
-// TROCA DE TELAS
+// TROCA DE TELA
 // ==========================================
 
 function changeScreen(screenName) {
@@ -57,39 +70,46 @@ function changeScreen(screenName) {
         screen.classList.remove("active");
     });
 
-    screens[screenName].classList.add("active");
+    if (screens[screenName]) {
+        screens[screenName].classList.add("active");
+        screens[screenName].scrollTop = 0;
+    }
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+    // Quando entrar no mural, carregar mensagens aprovadas
+    if (screenName === "wall") {
+        carregarMensagens();
+    }
 }
 
 
 // ==========================================
-// ABERTURA → INTRO
+// NAVEGAÇÃO
 // ==========================================
 
 startButton.addEventListener("click", () => {
-
     changeScreen("intro");
-
 });
-
-
-// ==========================================
-// INTRO → VÍDEO
-// ==========================================
 
 introButton.addEventListener("click", () => {
-
     changeScreen("video");
 
+    farewellVideo.currentTime = 0;
+    farewellVideo.play().catch(() => {
+        // O navegador pode bloquear autoplay.
+    });
+});
+
+afterVideoButton.addEventListener("click", () => {
+    changeScreen("farewell");
+});
+
+goToWallButton.addEventListener("click", () => {
+    changeScreen("wall");
 });
 
 
 // ==========================================
-// PROGRESSO DO VÍDEO
+// CONTROLE DO VÍDEO
 // ==========================================
 
 farewellVideo.addEventListener("timeupdate", () => {
@@ -98,17 +118,12 @@ farewellVideo.addEventListener("timeupdate", () => {
         return;
     }
 
-    const percentage =
+    const progress =
         (farewellVideo.currentTime / farewellVideo.duration) * 100;
 
-    videoProgress.style.width = `${percentage}%`;
-
+    videoProgress.style.width = `${progress}%`;
 });
 
-
-// ==========================================
-// VÍDEO TERMINOU
-// ==========================================
 
 farewellVideo.addEventListener("ended", () => {
 
@@ -117,29 +132,6 @@ farewellVideo.addEventListener("ended", () => {
     videoStatus.textContent = "MEMÓRIA CONCLUÍDA";
 
     afterVideoButton.classList.remove("hidden");
-
-});
-
-
-// ==========================================
-// VÍDEO → DESPEDIDA
-// ==========================================
-
-afterVideoButton.addEventListener("click", () => {
-
-    changeScreen("farewell");
-
-});
-
-
-// ==========================================
-// DESPEDIDA → MURAL
-// ==========================================
-
-goToWallButton.addEventListener("click", () => {
-
-    changeScreen("wall");
-
 });
 
 
@@ -149,213 +141,258 @@ goToWallButton.addEventListener("click", () => {
 
 messageInput.addEventListener("input", () => {
 
-    const currentLength = messageInput.value.length;
+    const total = messageInput.value.length;
 
-    characterCount.textContent =
-        `${currentLength} / 500`;
-
+    characterCount.textContent = `${total}/500`;
 });
 
 
 // ==========================================
-// ENVIO DA MENSAGEM
+// ENVIAR MENSAGEM
 // ==========================================
 
 messageForm.addEventListener("submit", async (event) => {
 
     event.preventDefault();
 
-
     const name = nameInput.value.trim();
     const message = messageInput.value.trim();
 
-
-    // --------------------------------------
-    // VALIDAÇÃO
-    // --------------------------------------
-
-    if (!name) {
-
-        showFormStatus(
-            "Por favor, coloque seu nome.",
-            true
-        );
-
-        nameInput.focus();
-
+    if (!name || !message) {
+        formStatus.textContent =
+            "Preencha seu nome e sua mensagem.";
         return;
     }
 
-
-    if (!message) {
-
-        showFormStatus(
-            "Por favor, escreva uma mensagem.",
-            true
-        );
-
-        messageInput.focus();
-
+    if (message.length > 500) {
+        formStatus.textContent =
+            "A mensagem deve ter no máximo 500 caracteres.";
         return;
     }
-
-
-    // --------------------------------------
-    // BOTÃO
-    // --------------------------------------
 
     publishButton.disabled = true;
-
     publishButton.textContent = "ENVIANDO...";
+    formStatus.textContent = "";
 
 
-    // --------------------------------------
-    // DADOS
-    // --------------------------------------
-
-    const formData = {
-
-        nome: name,
-
-        mensagem: message,
-
-        _subject:
-            "Nova mensagem para o Mural - Memórias Bitcom",
-
-        _template: "table",
-
-        _captcha: "false"
-
-    };
-
+    // ======================================
+    // 1. ENVIA PARA O GOOGLE SHEETS
+    // ======================================
 
     try {
 
-        // ----------------------------------
-        // ENVIA PARA O FORMSUBMIT
-        // ----------------------------------
-
-        const response = await fetch(
-            "https://formsubmit.co/ajax/marianevidigal@gmail.com",
-            {
-
-                method: "POST",
-
-                headers: {
-
-                    "Content-Type":
-                        "application/json",
-
-                    "Accept":
-                        "application/json"
-
-                },
-
-                body: JSON.stringify(formData)
-
-            }
-        );
-
-
-        // ----------------------------------
-        // TENTA LER A RESPOSTA
-        // ----------------------------------
-
-        const data = await response.json();
-
-
-        console.log("Resposta do FormSubmit:", data);
-
-
-        // ----------------------------------
-        // SUCESSO
-        // ----------------------------------
-
-        if (response.ok && data.success) {
-
-            messageForm.reset();
-
-            characterCount.textContent =
-                "0 / 500";
-
-
-            showFormStatus(
-                "Mensagem enviada! ❤️ Obrigada por fazer parte dessa história.",
-                false
-            );
-
-
-        } else {
-
-            console.error(
-                "FormSubmit retornou erro:",
-                data
-            );
-
-
-            showFormStatus(
-                data.message ||
-                "O envio não foi concluído. Verifique o console do navegador.",
-                true
-            );
-
-        }
-
+        await fetch(GOOGLE_SHEETS_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify({
+                nome: name,
+                mensagem: message
+            })
+        });
 
     } catch (error) {
 
         console.error(
-            "Erro ao enviar mensagem:",
+            "Erro ao enviar para o Google Sheets:",
             error
         );
-
-
-        showFormStatus(
-            "Não foi possível conectar ao serviço de envio. Verifique sua conexão com a internet.",
-            true
-        );
-
     }
 
 
-    // --------------------------------------
-    // RESTAURA BOTÃO
-    // --------------------------------------
+    // ======================================
+    // 2. ENVIA PARA O E-MAIL
+    // ======================================
+
+    try {
+
+        const response = await fetch(
+            FORMSUBMIT_URL,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({
+                    nome: name,
+                    mensagem: message,
+
+                    _subject:
+                        "Nova mensagem para o Mural - Memórias Bitcom",
+
+                    _template: "table",
+
+                    _captcha: "false"
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        console.log(
+            "Resposta do FormSubmit:",
+            data
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Erro no envio por e-mail:",
+            error
+        );
+    }
+
+
+    // ======================================
+    // FINALIZA
+    // ======================================
+
+    formStatus.textContent =
+        "Mensagem enviada! ❤️ Obrigada por fazer parte dessa história.";
+
+    messageForm.reset();
+
+    characterCount.textContent = "0/500";
 
     publishButton.disabled = false;
-
-    publishButton.textContent =
-        "DEIXAR MINHA MARCA";
-
+    publishButton.textContent = "DEIXAR MINHA MARCA";
 });
 
 
 // ==========================================
-// STATUS DO FORMULÁRIO
+// CARREGAR MENSAGENS APROVADAS
 // ==========================================
 
-function showFormStatus(message, isError) {
+async function carregarMensagens() {
 
-    formStatus.textContent = message;
-
-    formStatus.classList.remove("hidden");
-
-
-    if (isError) {
-
-        formStatus.classList.add("error");
-
-    } else {
-
-        formStatus.classList.remove("error");
-
+    if (!messagesContainer) {
+        return;
     }
 
+    messagesContainer.innerHTML = `
+        <div class="loading-messages">
+            Carregando mensagens...
+        </div>
+    `;
 
-    setTimeout(() => {
+    try {
 
-        formStatus.classList.add("hidden");
+        const response = await fetch(
+            `${GOOGLE_SHEETS_URL}?t=${Date.now()}`
+        );
 
-    }, 8000);
+        if (!response.ok) {
+            throw new Error(
+                "Não foi possível carregar as mensagens."
+            );
+        }
 
+        const mensagens = await response.json();
+
+        messagesContainer.innerHTML = "";
+
+
+        // Nenhuma mensagem aprovada ainda
+        if (!Array.isArray(mensagens) || mensagens.length === 0) {
+
+            messagesContainer.innerHTML = `
+                <div class="loading-messages">
+                    Ainda não há mensagens publicadas.
+                    <br>
+                    Seja a primeira pessoa a deixar uma marca. ❤️
+                </div>
+            `;
+
+            return;
+        }
+
+
+        // Mostrar mensagens aprovadas
+        mensagens.forEach(mensagem => {
+
+            const card = document.createElement("article");
+
+            card.className = "message-card";
+
+
+            const nameElement =
+                document.createElement("div");
+
+            nameElement.className =
+                "message-name";
+
+            nameElement.textContent =
+                mensagem.nome;
+
+
+            const textElement =
+                document.createElement("div");
+
+            textElement.className =
+                "message-text";
+
+            textElement.textContent =
+                mensagem.mensagem;
+
+
+            const dateElement =
+                document.createElement("div");
+
+            dateElement.className =
+                "message-date";
+
+            dateElement.textContent =
+                formatarData(mensagem.data);
+
+
+            card.appendChild(nameElement);
+            card.appendChild(textElement);
+            card.appendChild(dateElement);
+
+            messagesContainer.appendChild(card);
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Erro ao carregar mensagens:",
+            error
+        );
+
+        messagesContainer.innerHTML = `
+            <div class="loading-messages">
+                Não foi possível carregar as mensagens agora.
+            </div>
+        `;
+    }
+}
+
+
+// ==========================================
+// FORMATAR DATA
+// ==========================================
+
+function formatarData(data) {
+
+    if (!data) {
+        return "";
+    }
+
+    const date = new Date(data);
+
+    if (isNaN(date.getTime())) {
+        return "";
+    }
+
+    return date.toLocaleDateString(
+        "pt-BR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }
+    );
 }
